@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INPUT_SIZE 1000
+#define INPUT_SIZE 10001
 
 int main(void){
 	//Variables
-	char *nBuffer_1 = NULL, *nBuffer_2 = NULL;
+	char *nBuffer_1, *nBuffer_2;
 	int length_1 = 0, length_2 = 0, max, sub;
 	int *result;
 	//init
@@ -31,10 +31,10 @@ int main(void){
 	}
 	result = (int*)malloc(sizeof(int)*max + 1); //Plus One digit
 	//init
-	for (int i = 0; i<= max; result[i++] = -1);
+	for (int i = 0; i <= max; result[i++] = -1);
 	//Input value
-	for (int i = max-1; i >= sub; i--)
-		result[i+1] = (int)((nBuffer_1[i] - '0') + (nBuffer_2[i - sub] - '0'));
+	for (int i = max - 1; i >= sub; i--)
+		result[i + 1] = (int)((nBuffer_1[i] - '0') + (nBuffer_2[i - sub] - '0'));
 	for (int i = 0; i < sub; i++)
 		result[i + 1] = (int)(nBuffer_1[i] - '0');
 	//Calculate
@@ -47,5 +47,5 @@ int main(void){
 	}
 	//Display
 	for (int i = 0; i <= max; i++)
-		if (result[i] != -1) printf("%d", result[i]);
+	if (result[i] != -1) printf("%d", result[i]);
 }
