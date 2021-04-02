@@ -1,5 +1,5 @@
 /*
-	P_Name : "Sum and div"
+	P_Name : "Sum and divs"
 */
 #include <stdio.h>
 
