@@ -8,50 +8,31 @@
 bool MAZE[100][100] = {false};
 bool FLAGS[100][100] = {false};
 
-int bfs_recur(int vX, int vY, int N, int M, int c_steps){
+int bfs_recur(int vX, int vY, int N, int M, int c_steps){	
+	//Cut
+	if(FLAGS[vY][vX] || !MAZE[vY][vX] || vX < 0 || vX > M || vY < 0 || vY > N) return -1;
 	//End Condition
-	if(vY == N && vX == M) c_steps;
+	if(vY == N && vX == M) return c_steps;	
 	//Flag Vertex	
-	FLAGS[vY][vX] = true;	
-	//Check can go
-	//-up & down
-	int count = 0, pos, max;
-	//--result
+	FLAGS[vY][vX] = true;		
 	int resultArray[4];
-	for(int ud = 1; count < 2; count++, ud = -1){		
-		pos = vY + ud;
-		printf("[%d,%d]\n", vX, pos);
-		//Cant go
-		if(pos < 0 || pos >= N) {
-			resultArray[count] = 0;
-			continue;	
-		}
-		//go
-		if(MAZE[pos][vX] && !FLAGS[pos][vX])
-			resultArray[count] = bfs_recur(vX, pos, N, M, c_steps + 1);
-	}	
-	//--left & right	
-	printf("->lr\n");
-	for(int lr = 1; count < 4; count++, lr = -1){
-		pos = vX + lr;
-		//Cant go
-		if(pos < 0 || pos >= N) {
-			resultArray[count] = 0;
-			continue;
-		}
-		//go
-		if(MAZE[vY][pos] && !FLAGS[vY][pos])
-			resultArray[count] = bfs_recur(pos, vY, N, M, c_steps + 1);
-	}
+	//1st - right
+	resultArray[0] = bfs_recur(vX+1, vY, N, M, c_steps + 1);
+	//2nd - down
+	resultArray[1] = bfs_recur(vX, vY+1, N, M, c_steps + 1);
+	//3th - left
+	resultArray[2] = bfs_recur(vX-1, vY, N, M, c_steps + 1);	
+	//4th - up
+	resultArray[3] = bfs_recur(vX, vY-1, N, M, c_steps + 1);	
 	//count = min value
-	count = resultArray[0]; max = count;
-	for(int i = 1; i < 4; i++){
+	int count = -1;
+	for(int i = 0; i < 4; i++){		
+		if(resultArray[i] == -1) continue;
 		//compare
-		if(max < resultArray[i]) max = resultArray[i];
+		if(count == -1) count = resultArray[i];
 		if(count > resultArray[i]) count = resultArray[i];
-	}
-	if(max == 0) return c_steps;
-	else count;
+	}	
+	return count;
 }
 
 int main(void){
@@ -60,12 +41,11 @@ int main(void){
 	//Input
 	scanf("%d%d", &N, &M);
 	//-create Maze
-	char input;
+	int input;
 	for(int i = 0; i < N; i++)
-		for(int j = 0; j < M; MAZE[i][j++] = input - '0') scanf("%c", &input);
-	//Work
-	min = bfs_recur(0,0, N, M, 0);
+		for(int j = 0; j < M; MAZE[i][j++] = input) scanf("%1d", &input);
+	//Work	
 	//Display
-	printf("%d", min);
+	printf("%d", bfs_recur(0,0, N-1, M-1, 1));
 	return 0;
 }
