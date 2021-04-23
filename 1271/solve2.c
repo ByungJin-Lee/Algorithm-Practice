@@ -6,7 +6,7 @@
 int main(void){
 	char haveMoney[10001];
 	char amountPerson[10001];
-	int lenHaveMoney = 0, lenAmountPerson = 0, sub, minus, countDivisor = 0, i, carry;
+	int lenHaveMoney = 0, lenAmountPerson = 0, sub, countDivisor = 0, isZero = 1, i, end = 0;
 	
 	scanf("%s %s", haveMoney, amountPerson);	
 
@@ -15,7 +15,7 @@ int main(void){
 	lenHaveMoney--; lenAmountPerson--;
 	sub = lenHaveMoney - lenAmountPerson;					
 	
-	while(1){								
+	while(1){				
 		for(i = 0; i < lenAmountPerson; i++){			
 			haveMoney[sub+i] = haveMoney[sub+i] - amountPerson[i] + '0';
 		}	
@@ -27,8 +27,13 @@ int main(void){
 		}
 		countDivisor++;
 		//EndConditon
-		for(i = 0; haveMoney[i] >= '0' && i <= sub; i++);			
-		if(i <= sub ){
+		for(int i = 0; i <= sub; i++){
+			if(haveMoney[i] < '0'){
+				end = 1;
+				break;
+			}
+		}
+		if(end){
 			for(i = 0; i < lenAmountPerson; i++){			
 				haveMoney[sub+i] = haveMoney[sub+i] + (amountPerson[i] - '0');
 			}
@@ -42,10 +47,14 @@ int main(void){
 		}
 	}	
 	printf("%d\n", countDivisor-1);
-	for(i = 0; haveMoney[i]=='0' && i < lenHaveMoney;i++);
-	if(i==lenHaveMoney)
-		printf("0");
-	else
-		printf("%s", haveMoney+i);
+	for(i = 0; i < lenHaveMoney; i++){
+		if(haveMoney[i] != '0'){
+			isZero = 0;
+		}
+		if(!isZero){
+			printf("%c", haveMoney[i]);
+		}
+	}
+	if(isZero) printf("0");
 	return 0;
 }
